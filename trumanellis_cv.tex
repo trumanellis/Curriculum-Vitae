@@ -22,6 +22,7 @@
 
 % This is a helpful package that puts math inside length specifications
 \usepackage{calc}
+\usepackage{bibentry}
 
 % Turn of hyphenation
 \hyphenpenalty=5000
@@ -255,8 +256,8 @@
      {Institute for Computational Engineering and Sciences} & \\
 \href{http://www.utexas.edu/}{The University of Texas at Austin}
                            & \textit{Mobile:} 512-814-8304 \\
-1 University Station C0200 & \textit{Email:} \email{truman@ices.utexas.edu}\\
-Austin, TX 78712-0027          & \textit{Web:} 
+201 East 24th St, Stop C0200 & \textit{Email:} \email{truman@ices.utexas.edu}\\
+Austin, TX 78712-1229          & \textit{Web:} 
 \href{http://www.trumanellis.com/}{www.trumanellis.com}\\
 \end{tabular}
 
@@ -266,16 +267,17 @@ Computational engineer with a solid grasp of the Navier-Stokes,
 Reynolds Averaged Navier-Stokes, and Euler equations, and 
 practiced with the numerical methods used to solve them. 
 Experience running commercial CFD solvers as well as writing 
-my own. Expertise with Linux and open source software as well 
-as Windows and Microsoft Office products. Well developed 
+my own. Expertise with Linux with time on high performance computing
+systems. Well developed 
 programming and development skills. Comfortable with both 
 spoken and written communication and interpersonal skills 
 with experience working in a team environment as well as individually.
 
 \section{Research Interests}
 %
-Computational mechanics, computational fluid dynamics, turbulence modeling, 
-finite element methods, discontinuous Petrov-Galerkin, Lagrangian hydrocodes
+Computational fluid dynamics, turbulence modeling, 
+finite element methods, discontinuous Petrov-Galerkin, Lagrangian hydrocodes,
+computational plasma dynamics, magnetohydrodynamics, computational mechanics
 
 \section{Education}
 %
@@ -323,6 +325,29 @@ San Luis Obispo, California
 
 \section{Professional Experience}
 %
+\textbf{Graduate Research Assistant} \hfill {2010 to present}
+\begin{innerlist}
+
+\item[] \href{http://ices.utexas.edu/}{Institute for Computational Engineering
+and Sciences},\\
+        \href{http://www.utexas.edu/}{University of Texas at Austin}
+\begin{innerlist}
+\item Developing the discontinuous Petrov-Galerkin finite element method for
+fluid flow applications.
+\item Actively contributing to
+\href{https://github.com/CamelliaDPG/Camellia}{Camellia}, a C++ library for
+rapid development of DPG problem formulations.
+\item Added an interface to VTK output for visualization via Paraview.
+\item Studying an exactly conservative formulation of DPG through Lagrange
+multipliers.
+\item Contributed to open source
+\href{http://libmesh.sourceforge.net/}{libMesh} finite element library.
+\end{innerlist}
+\end{innerlist}
+
+\bigskip
+\pagebreak
+
 \textbf{Graduate Student Researcher} \hfill {2008 to 2010}
 \begin{innerlist}
 
@@ -341,7 +366,7 @@ San Luis Obispo, California
 
 \bigskip
 
-\textbf{Student Researcher} \hfill {Summer 2007}
+\textbf{Undergraduate Student Researcher} \hfill {Summer 2007}
 \begin{innerlist}
 
 \item[] {Research Experience for Undergraduates},
@@ -352,14 +377,21 @@ San Luis Obispo, California
 \end{innerlist}
 \end{innerlist}
 
-\section{Refereed\\Journal\\Publications} \begin{bibsection}
+\section{Refereed\\Journal\\Publications} 
+\begin{bibsection}
     \item Dobrev, V. A., Ellis, T. E., Kolev, T. V. and Rieben, R. N. (2011), 
           Curvilinear finite elements for Lagrangian hydrodynamics. 
           \emph{International Journal for Numerical Methods in Fluids}, 
-          65: 1295–1310. \doi{10.1002/fld.2366}
+          \doi{10.1002/fld.2366}
+    \item Dobrev, V. A., Ellis, T. E., Kolev, T. V. and Rieben, R. N. (2012), 
+          High-order curvilinear finite elements for axisymmetric Lagrangian
+          hydrodynamics.
+          \emph{Computers and Fluids}, 
+          \doi{10.1016/j.compfluid.2012.06.004}
 \end{bibsection}
 
-% \section{Submitted\\Journal\\Publications} \begin{bibsection}
+% \section{Submitted\\Journal\\Publications} 
+% \begin{bibsection}
 %     \item Dobrev, V. A., Ellis, T. E., Kolev, T. V. and Rieben, R. N. (2011), 
 %           Curvilinear finite elements for Lagrangian hydrodynamics. 
 %           \emph{International Journal for Numerical Methods in Fluids}, 
@@ -385,7 +417,7 @@ San Luis Obispo, California
 Computer Programming:
 %
 \begin{innerlist}
-    \item C$+$$+$, Python, \Matlab, Mathematica, and others
+    \item C$+$$+$, Python, Lua, \Matlab, Mathematica, and others
 \end{innerlist}
 
 \halfblankline

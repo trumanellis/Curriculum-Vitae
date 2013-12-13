@@ -1,0 +1,1153 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% Simple LaTeX CV Template %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% NOTE: If you find that it says                                     %%
+%%                                                                    %%
+%%                           1 of ??                                  %%
+%%                                                                    %%
+%% at the bottom of your first page, this means that the AUX file     %%
+%% was not available when you ran LaTeX on this source. Simply RERUN  %%
+%% LaTeX to get the ``??'' replaced with the number of the last page  %%
+%% of the document. The AUX file will be generated on the first run   %%
+%% of LaTeX and used on the second run to fill in all of the          %%
+%% references.                                                        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Don't like 10pt? Try 11pt or 12pt
+\documentclass[10pt]{article}
+
+% This is a helpful package that puts math inside length specifications
+\usepackage{calc}
+
+
+% Simpler bibsection for CV sections
+% (thanks to natbib for inspiration)
+\makeatletter
+\newlength{\bibhang}
+\setlength{\bibhang}{1em}
+\newlength{\bibsep}
+ {\@listi \global\bibsep\itemsep \global\advance\bibsep by\parsep}
+\newenvironment{bibsection}%
+        {\vspace{-\baselineskip}\begin{list}{}{%
+       \setlength{\leftmargin}{\bibhang}%
+       \setlength{\itemindent}{-\leftmargin}%
+       \setlength{\itemsep}{\bibsep}%
+       \setlength{\parsep}{\z@}%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+\makeatother
+
+% Layout: Puts the section titles on left side of page
+\reversemarginpar
+
+%
+%         PAPER SIZE, PAGE NUMBER, AND DOCUMENT LAYOUT NOTES:
+%
+% The next \usepackage line changes the layout for CV style section
+% headings as marginal notes. It also sets up the paper size as either
+% letter or A4. By default, letter was used. If A4 paper is desired,
+% comment out the letterpaper lines and uncomment the a4paper lines.
+%
+% As you can see, the margin widths and section title widths can be
+% easily adjusted.
+%
+% ALSO: Notice that the includefoot option can be commented OUT in order
+% to put the PAGE NUMBER *IN* the bottom margin. This will make the
+% effective text area larger.
+%
+% IF YOU WISH TO REMOVE THE ``of LASTPAGE'' next to each page number,
+% see the note about the +LP and -LP lines below. Comment out the +LP
+% and uncomment the -LP.
+%
+% IF YOU WISH TO REMOVE PAGE NUMBERS, be sure that the includefoot line
+% is uncommented and ALSO uncomment the \pagestyle{empty} a few lines
+% below.
+%
+
+%% Use these lines for letter-sized paper
+\usepackage[paper=letterpaper,
+            %includefoot, % Uncomment to put page number above margin
+            marginparwidth=1.2in,     % Length of section titles
+            marginparsep=.05in,       % Space between titles and text
+            margin=1in,               % 1 inch margins
+            includemp]{geometry}
+
+%% Use these lines for A4-sized paper
+%\usepackage[paper=a4paper,
+%            %includefoot, % Uncomment to put page number above margin
+%            marginparwidth=30.5mm,    % Length of section titles
+%            marginparsep=1.5mm,       % Space between titles and text
+%            margin=25mm,              % 25mm margins
+%            includemp]{geometry}
+
+%% More layout: Get rid of indenting throughout entire document
+\setlength{\parindent}{0in}
+
+%% This gives us fun enumeration environments. compactitem will be nice.
+\usepackage{paralist}
+
+%% Reference the last page in the page number
+%
+% NOTE: comment the +LP line and uncomment the -LP line to have page
+%       numbers without the ``of ##'' last page reference)
+%
+% NOTE: uncomment the \pagestyle{empty} line to get rid of all page
+%       numbers (make sure includefoot is commented out above)
+%
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+%\pagestyle{empty}      % Uncomment this to get rid of page numbers
+\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfootoffset{\marginparsep+\marginparwidth}
+\newlength{\footpageshift}
+\setlength{\footpageshift}
+          {0.5\textwidth+0.5\marginparsep+0.5\marginparwidth-2in}
+\lfoot{\hspace{\footpageshift}%
+       \parbox{4in}{\, \hfill %
+                    \arabic{page} of \protect\pageref*{LastPage} % +LP
+%                    \arabic{page}                               % -LP
+                    \hfill \,}}
+
+% Finally, give us PDF bookmarks
+\usepackage{color,hyperref}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.3}
+\hypersetup{colorlinks,breaklinks,
+            linkcolor=darkblue,urlcolor=darkblue,
+            anchorcolor=darkblue,citecolor=darkblue}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The title (name) with a horizontal rule under it
+% (optional argument typesets an object right-justified across from name
+%  as well)
+%
+% Usage: \makeheading{name}
+%        OR
+%        \makeheading[right_object]{name}
+%
+% Place at top of document. It should be the first thing.
+% If ``right_object'' is provided in the square-braced optional
+% argument, it will be right justified on the same line as ``name'' at
+% the top of the CV. For example:
+%
+%       \makeheading[\emph{Curriculum vitae}]{Your Name}
+%
+% will put an emphasized ``Curriculum vitae'' at the top of the document
+% as a title. Likewise, a picture could be included:
+%
+%   \makeheading[\includegraphics[height=1.5in]{my_picutre}]{Your Name}
+%
+% the picture will be flush right across from the name.
+\newcommand{\makeheading}[2][]%
+        {\hspace*{-\marginparsep minus \marginparwidth}%
+         \begin{minipage}[t]{\textwidth+\marginparwidth+\marginparsep}%
+             {\large \bfseries #2 \hfill #1}\\[-0.15\baselineskip]%
+                 \rule{\columnwidth}{1pt}%
+         \end{minipage}}
+
+% The section headings
+%
+% Usage: \section{section name}
+%
+% Follow this section IMMEDIATELY with the first line of the section
+% text. Do not put whitespace in between. That is, do this:
+%
+%       \section{My Information}
+%       Here is my information.
+%
+% and NOT this:
+%
+%       \section{My Information}
+%
+%       Here is my information.
+%
+% Otherwise the top of the section header will not line up with the top
+% of the section. Of course, using a single comment character (%) on
+% empty lines allows for the function of the first example with the
+% readability of the second example.
+\renewcommand{\section}[2]%
+        {\pagebreak[3]\vspace{1.3\baselineskip}%
+         \phantomsection\addcontentsline{toc}{section}{#1}%
+         \hspace{0in}%
+         \marginpar{
+         \raggedright \scshape #1}#2}
+
+% An itemize-style list with lots of space between items
+\newenvironment{outerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1]}{\end{itemize}%
+         \vspace{-.6\baselineskip}}
+
+% An environment IDENTICAL to outerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{lonelist}[1][\enskip\textbullet]%
+        {\vspace{-\baselineskip}\begin{list}{#1}{%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+
+% An itemize-style list with little space between items
+\newenvironment{innerlist}[1][\enskip\textbullet]%
+        {\begin{compactitem}[#1]}{\end{compactitem}}
+
+% An environment IDENTICAL to innerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{loneinnerlist}[1][\enskip\textbullet]%
+        {\vspace{-\baselineskip}\begin{compactitem}[#1]}
+        {\end{compactitem}\vspace{-.6\baselineskip}}
+
+% To add some paragraph space between lines.
+% This also tells LaTeX to preferably break a page on one of these gaps
+% if there is a needed pagebreak nearby.
+\newcommand{\blankline}{\quad\pagebreak[3]}
+\newcommand{\halfblankline}{\quad\vspace{-0.5\baselineskip}\pagebreak[3]}
+
+% Uses hyperref to link DOI
+\newcommand\doilink[1]{\href{http://dx.doi.org/#1}{#1}}
+\newcommand\doi[1]{doi:\doilink{#1}}
+
+% For \url{SOME_URL}, links SOME_URL to the url SOME_URL
+\providecommand*\url[1]{\href{#1}{#1}}
+% Same as above, but pretty-prints SOME_URL in teletype fixed-width font
+\renewcommand*\url[1]{\href{#1}{\texttt{#1}}}
+
+% For \email{ADDRESS}, links ADDRESS to the url mailto:ADDRESS
+\providecommand*\email[1]{\href{mailto:#1}{#1}}
+% Same as above, but pretty-prints ADDRESS in teletype fixed-width font
+%\renewcommand*\email[1]{\href{mailto:#1}{\texttt{#1}}}
+
+%\providecommand\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+%    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+%\providecommand\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+%    \TeX}}
+\providecommand\BibTeX{{B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    \TeX}}
+\providecommand\Matlab{\textsc{Matlab}}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Begin CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\makeheading{Theodore P.~Pavlic}
+
+\section{Contact Information}
+%
+% NOTE: Mind where the & separators and \\ breaks are in the following
+%       table.
+%
+% ALSO: \rcollength is the width of the right column of the table
+%       (adjust it to your liking; default is 1.85in).
+%
+\newlength{\rcollength}\setlength{\rcollength}{1.85in}%
+%
+\begin{tabular}[t]{@{}p{\textwidth-\rcollength}p{\rcollength}}
+\href{http://www.cse.osu.edu/}%
+     {Department of Computer Science and Engineering} & \\
+\href{http://www.osu.edu/}{The Ohio State University}
+                           & \textit{Mobile:} +1-760-483-3390 \\
+395 Dreese Labs            & \textit{Fax:} +1-614-292-2911 \\
+2015 Neil Avenue           & \textit{E-mail:} \email{pavlic.3@osu.edu}\\
+Columbus, OH  43210 USA    & \textit{WWW:}
+\href{http://www.tedpavlic.com/}{www.tedpavlic.com}\\
+\end{tabular}
+
+\section{Objective}
+%
+Placement in an academic position (i.e., faculty, postdoctoral, or
+research scientist) that allows for advanced research in distributed
+complex adaptive systems (i.e., modeling, analysis, design, and
+verification) with a particular focus on the control of engineered
+agents (e.g., for communications, control, software, and electronics
+applications) and the analysis of biological phenomena (e.g.,
+self-organization, ecological rationality)
+\begin{innerlist}
+\item More information and auxiliary documents can be found at\\\url{http://www.tedpavlic.com/facjobsearch/}
+\end{innerlist}
+
+\section{Security Clearance}
+%
+Department of Defense Top Secret SCI with polygraph (expired: 2002)
+
+% \section{Citizenship}
+% %
+% USA
+
+\section{Research Interests}
+%
+Agent-based modeling, hybrid systems, distributed algorithms, amorphous
+computing, autonomous systems and vehicles, control theory,
+communication theory, behavioral ecology, cooperation theory,
+optimization, game theory, parallel computation, robotics, engineering
+education, bio-mimicry and bio-inspiration
+
+\section{Education}
+%
+\href{http://www.osu.edu/}{\textbf{The Ohio State University}},
+Columbus, Ohio USA
+\begin{outerlist}
+
+\item[] Ph.D.,
+        \href{http://www.ece.osu.edu/}
+             {Electrical and Computer Engineering},
+             August 2010
+        \begin{innerlist}
+        \item Thesis Topic: \emph{Design and Analysis of Optimal
+            Task-Processing Agents}
+        \item Thesis Proposal: \emph{Cooperative Task Processing}
+        \item Candidacy: \emph{Research
+            Problems in Distributed Control for Energy Systems}
+        \item Adviser:
+              \href{http://www.ece.osu.edu/~passino/}
+                   {Professor Kevin M.~Passino}
+        \item Area of Study: Control Engineering
+        \end{innerlist}
+
+\item[] M.S.,
+        \href{http://www.ece.osu.edu/}
+             {Electrical and Computer Engineering}, August 2007
+        \begin{innerlist}
+        \item Thesis Topic: \emph{Optimal Foraging Theory Revisited}
+        \item Adviser:
+              \href{http://www.ece.osu.edu/~passino/}
+                   {Professor Kevin M.~Passino}
+        \item Area of Study: Control Engineering
+        \end{innerlist}
+
+\item[] B.S.,
+        \href{http://www.ece.osu.edu/}
+             {Electrical and Computer Engineering}, June 2004
+        \begin{innerlist}
+        \item \emph{Magna cum Laude}, With Honors in Engineering
+        \item Electrical specialization (emphasis on electromagnetics and digital computers)
+        \item Minor in \href{http://www.cse.ohio-state.edu/}
+                            {Computer and Information Systems}
+              (programming and algorithms)
+        \end{innerlist}
+
+\end{outerlist}
+
+\section{Academic Appointments}
+%
+\textbf{Postdoctoral Researcher} \hfill {September 2010 to present}
+\begin{innerlist}
+
+\item[] \href{http://www.cse.ohio-state.edu/}{Department of Computer Science and Engineering},\\
+        \href{http://www.osu.edu/}{The Ohio State University}
+\begin{innerlist}
+\item \href{http://www.nfs.gov/}{National Science Foundation} Cyber-Physical Systems (ENG, \href{http://www.nsf.gov/div/index.jsp?div=eccs}{ECCS})
+\begin{innerlist}
+\item[$-$] Autonomous Driving in Mixed-Traffic Urban Environments (grant~\href{http://www.nsf.gov/awardsearch/showAward.do?AwardNumber=0931669}{\#0931669})
+\item[$-$] Supervisor (co-PI):
+    \href{http://www.cse.ohio-state.edu/~paolo/}%
+         {Professor Paolo A.~G.~Sivilotti}
+\end{innerlist}
+\end{innerlist}
+
+\end{innerlist}
+
+\section{Refereed\\Journal\\Publications} \begin{bibsection}
+    \item Pavlic, T.P., and K.M.~Passino. Generalizing foraging theory
+        for analysis and design. \emph{The International Journal of
+        Robotics Research [Special Issue on Stochasticity in Robotics
+        and Bio-Systems Part 1]}. 30(5):505--523. 2011.\\
+        \doi{10.1177/0278364910396551}
+
+    \item Pavlic, T.P., and K.M.~Passino. The sunk-cost effect as an
+        optimal rate-maximizing behavior. \emph{Acta Biotheoretica},
+        59(1):53--66. 2011.\\
+        \doi{10.1007/s10441-010-9107-8}
+
+    \item Pavlic, T.P., and K.M.~Passino. When rate maximization is
+        impulsive. \emph{Behavioral Ecology and Sociobiology},
+        64(8):1255--1265. August 2010.\\
+        \doi{10.1007/s00265-010-0940-1}
+
+    \item Pavlic, T.P., and K.M.~Passino. Foraging theory for autonomous
+        vehicle speed choice. \emph{Engineering Applications of
+        Artificial Intelligence}, 22(3):482--489, April 2009.\\
+        \doi{10.1016/j.engappai.2008.10.017}
+\end{bibsection}
+
+\section{Submitted\\Journal\\Publications} \begin{bibsection}
+    \item Pavlic, T.P., and K.M.~Passino. Cooperative task
+        processing. \emph{IEEE Transactions of Automatic Control}. 2010.
+        Submitted.
+\end{bibsection}
+
+% Add a little space to nudge next ``Conference Publications'' marginpar
+% down to make room for tall ``Submitted Journal Publications''
+% marginpar. If there are enough submitted journal publications, this
+% space will not be needed (and should be removed).
+\vspace{0.1in}
+
+\section{Conference\\Publications} \begin{bibsection}
+    \item Pavlic, T.P. Stigmergic memory for real-time primal-space
+        distributed optimization under constraints.
+        In: \emph{Proceedings of the 50th IEEE Conference on Decision
+        and Control and European Control Conference (CDC-ECC~2011)},
+        December 12--15, 2011. Submitted.
+
+    \item Pavlic, T.P., and K.M.~Passino. Cooperative task-processing
+        networks. In: \emph{Proceedings of the Second International
+        Workshop on Networks of Cooperating Objects (CONET~2011)},
+        April 11, 2011.
+
+    \item Pavlic, T.P., and K.M.~Passino. Cooperative task
+        processing. In: \emph{Proceedings of the ICAM 2009 Symposium:
+        Emergence in Physical, Biological, and Social Systems IV},
+        November 13, 2009. Poster abstract.
+
+    \item Freuler, R.J., M.J.~Hoffmann, T.P.~Pavlic, J.M.~Beams,
+        J.P.~Radigan, P.K.~Dutta, J.T.~Demel, and E.D.~Justen.
+        Experiences with a Comprehensive Freshman Hands-On Course~--
+        Designing, Building, and Testing Small Autonomous Robots. In:
+        \emph{Proceedings of the 2003 American Society for Engineering
+        Education Annual Conference \& Exposition}, 2003.
+\end{bibsection}
+
+\section{Other\\Publications} \begin{bibsection}
+    \item Pavlic, T.P., P.A.G.~Sivilotti, A.D.~Weide, and B.W.~Weide.
+        Comments on 'Adaptive Cruise Control: Hybrid, Distributed, and
+        Now Formally Verified'. Tech.~report OSU-CISRC-7/11-TR22, The Ohio State
+        University, 2011.
+
+    \item Pavlic, T.P., and K.M.~Passino. Cooperative Task-processing
+        Networks: Parallel Computation of Non-trivial Volunteering
+        Equilibria. Tech.~report OSU-CISRC-3/11-TR05, The Ohio State
+        University, 2011.
+
+    \item Pavlic, T.P. \emph{Design and Analysis of Optimal
+        Task-Processing Agents}. PhD thesis, The Ohio State University,
+        Columbus, OH, 2010.
+
+    \item Pavlic, T.P. \emph{Optimal Foraging Theory Revisited}.
+        Master's thesis, The Ohio State University, Columbus, OH, 2007.
+\end{bibsection}
+
+\section{Books in Preparation} \begin{bibsection}
+    \item Pavlic, T.P., B.W.~Andrews, K.M.~Passino, and T.A.~Waite.
+        \emph{Foraging Theory for Engineering}.
+\end{bibsection}
+
+\section{Papers in Preparation} \begin{bibsection}
+    \item Pavlic, T.P., K.M.~Passino. Distributed optimization under
+        constraints: Pareto-optimal intelligent lighting.
+
+    \item Pavlic, T.P. The ideal free distribution as degenerate form of
+        nutrient-constrained optimization.
+\end{bibsection}
+
+\section{Referee Service} \begin{loneinnerlist}
+    \item \emph{49\textsuperscript{th} Annual Conference on Decision and Control}
+    \item \emph{Bioinspiration \& Biomimetics}
+    \item \emph{Behavioral Ecology}
+    \item \emph{IEEE Transactions on Signal Processing}
+    \item \emph{The International Journal of Robotics Research}
+    \item \emph{Swarm and Evolutionary Computation}
+    \item \emph{IEEE Transactions on Control Systems Technology}
+\end{loneinnerlist}
+
+\section{Conference Service} \begin{bibsection}
+    \item Organizer/Associate Editor for invited session: ``Correctness
+        by Verification and Design'', 14\textsuperscript{th} IEEE
+        Conference on Intelligent Transportation Systems~(ITSC~2011),
+        Washington, DC, October 5--7, 2011.
+\end{bibsection}
+
+\section{Awards}
+%
+\href{http://www.nsf.gov/}{National Science Foundation}
+\begin{innerlist}
+\item \href{http://www.nsfgk12.org/}{GK-12 Fellowship}, 2006--2007
+\item \href{http://www.nsf.gov/grfp}
+           {Graduate Research Fellowship} Honorable Mention, 2005
+\end{innerlist}
+
+\halfblankline
+
+\href{http://www.osu.edu}{The Ohio State University}
+\begin{innerlist}
+\item \href{http://www.gradsch.osu.edu/Content.aspx?Content=44&itemid=2}
+           {Dean's Distinguished University Fellowship}, 2004--2010
+\item Electrical and Computer Engineering Bradshaw Scholarship,
+        2002--2004
+\item Electrical and Computer Engineering Shafstall Scholarship,
+        2001--2003
+\item University Scholarship, 1999--2003
+\end{innerlist}
+
+\section{Teaching Experience}
+\href{http://www.osu.edu}{\textbf{The Ohio State University}},
+Columbus, Ohio USA
+\begin{outerlist}
+
+\item[] \textit{Teaching Assistant}%
+    \hfill \textbf{September 2007 to August 2009}\\
+    (sample graded material and student evaluations available upon
+    request)
+    \begin{innerlist}
+        \item Instructor for ECE~327: Electronic Devices and Circuits Laboratory I
+        \begin{innerlist}
+            \item Autumn~2007, Winter~2008 (2 sections), Spring~2008
+                (2 sections), Winter~2009 (2 sections), and Summer~2009
+
+            \item Sample student evaluations available upon request
+
+            \item Responsible for 1~hour lecture and supervision of
+                3~hour laboratory where junior and senior undergraduate
+                students design and implement infrared modem and speaker
+                driver for analog electronic audio signals
+
+            \item Developed hundreds of pages of supplementary course
+                material, including a course web page archived at
+                \url{http://www.tedpavlic.com/teaching/osu/ece327}
+        \end{innerlist}
+
+        \halfblankline
+
+        \item Grader for ECE~481 Ethics in Electrical and Computer Engineering
+        \begin{innerlist}
+            \item Autumn~2007 and Autumn~2008
+        \end{innerlist}
+
+        \halfblankline
+
+        \item Instructor for ECE~209: Circuits and Electronics
+            Laboratory
+        \begin{innerlist}
+            \item Autumn~2008
+
+            \item Sample student evaluations available upon request
+
+            \item Responsible for 0.5~hour lecture and supervision of
+                3.5~hour laboratory where sophomore undergraduate
+                students learn learn how to use basic laboratory
+                equipment to study properties of electronic circuits
+
+            \item Developed supplementary course
+                material, including a course web page archived at
+                \url{http://www.tedpavlic.com/teaching/osu/ece209}
+        \end{innerlist}
+
+        \halfblankline
+
+        \item Instructor for ECE~557: Control, Signals, and Systems
+            Laboratory
+        \begin{innerlist}
+            \item Summer~2008 (2 sections) and Summer~2009
+
+            \item Sample student evaluations available upon request
+
+            \item Responsible for 0.5~hour lecture and supervision of
+                3.5~hour laboratory where senior undergraduate students
+                combine
+                \href{http://www.mathworks.com/products/simulink/}{Simulink},
+                with \href{http://www.dspaceinc.com/}{dSPACE} RTI1104
+                real-time control hardware and software to do analysis
+                and control implementation for linear systems
+
+            \item Developed supplementary course
+                material, including a course web page archived at
+                \url{http://www.tedpavlic.com/teaching/osu/ece557}
+        \end{innerlist}
+
+        \halfblankline
+
+        \item Lab Instructor for ECE~758: Control Systems Implementation
+            Laboratory
+        \begin{innerlist}
+            \item Spring~2009 (2 sections)
+
+            \item Sample student evaluations available upon request
+
+            \item Responsible for 0.5~hour lecture and supervision of
+                3.5~hour laboratory where graduate students and senior
+                undergraduate students combine
+                \href{http://www.mathworks.com/products/simulink/}{Simulink},
+                with \href{http://www.dspaceinc.com/}{dSPACE} RTI1104
+                real-time control hardware and software to do analysis
+                and advanced control implementation for linear and
+                non-linear systems
+
+            \item Developed supplementary course
+                material, including a course web page archived at
+                \url{http://www.tedpavlic.com/teaching/osu/ece758}
+        \end{innerlist}
+    \end{innerlist}
+
+\item[] \href{http://www.nsfgk12.org/}
+        {\emph{National Science Foundation GK-12 Fellow}}
+        \hfill \textbf{September 2006 to October 2007}
+\begin{innerlist}
+    \item[] Developed, implemented, and evaluated daily inquiry-based
+        fourth-grade science lessons for a local inner-city public
+        school class.
+\end{innerlist}
+
+\item[] \textit{Instructor}%
+        \hfill \textbf{March 2002 to June 2004}
+\begin{innerlist}
+\item Member of \href{http://feh.eng.ohio-state.edu/}
+                     {Fundamentals of Engineering for Honors}
+      instructional team.
+\item Special graduate teaching appointment as undergraduate.
+\item Lectured weekly engineering laboratory for ENG~H191,
+        H192, and~H193.
+\item Trained in-class undergraduate teaching assistants in laboratory
+        procedure.
+\item Graded weekly lab reports and provided laboratory exams.
+\end{innerlist}
+
+\item[] \textit{Teaching Assistant}%
+        \hfill \textbf{September 2000 to March 2002}
+\begin{innerlist}
+\item Assisted \href{http://feh.eng.ohio-state.edu/}
+                    {Fundamentals of Engineering for Honors}
+      instructional team.
+\item Provided in-class support to first-year engineering students
+        (ENG~H191, H192, and~H193).
+\item Graded daily assignments on programming and drafting.
+\item Developed on-line journal submission and report system for Physics
+        Education Research Group~(PERG).
+\end{innerlist}
+
+\item[] \textit{Undergraduate Researcher}%
+        \hfill \textbf{September 2000 to March 2002}
+\begin{innerlist}
+\item Participated in the
+        \href{http://www.cse.ohio-state.edu/europa/}{Europa
+        Undergraduate Research Forum}, a part of the
+        \href{http://www.cse.ohio-state.edu/rsrg/}{Reusable Software
+        Research Group}.
+\item Studied component-based software engineering undergraduate
+        pedagogy.
+\item Researched changes to RESOLVE/C++ implementation for ANSI
+        compliance.
+\end{innerlist}
+
+\item[] \textit{Grader}%
+        \hfill \textbf{September 2001 to December 2001}
+\begin{innerlist}
+\item Graded daily electromagnetics assignments (ECE~311).
+\end{innerlist}
+\end{outerlist}
+
+\section{Professional Experience}
+%
+\href{http://www.ni.com/}{\textbf{National Instruments}},
+Austin, Texas USA
+\begin{outerlist}
+
+\item[] \textit{Hardware R\&D Intern for Multifunction DAQ}%
+        \hfill \textbf{June 2003 to September 2003}
+\begin{innerlist}
+\item Designed final verification testing fixture for use with STC2 MIO
+        products.
+\item Designed and executed study of the effect of varying burn-in time
+        on long-term drift of common industry voltage references.
+\end{innerlist}
+
+\item[] \textit{Hardware R\&D Intern for Multifunction DAQ}%
+        \hfill \textbf{June 2002 to September 2002}
+\begin{innerlist}
+\item Designed and performed validation tests on new 16-bit 800 kHz
+        NI-6120 SMIO DAQ board.
+
+\item Designed high quality filter/amplifier source for use with NI-5411
+        arbitrary function generator.
+\end{innerlist}
+
+\end{outerlist}
+
+\halfblankline
+
+\textbf{\href{http://www.ibm.com/}{IBM} Network Storage},
+Research Triangle Park, North Carolina USA
+\begin{outerlist}
+
+\item[] \textit{Core Systems Software Developer for FlexNAS}%
+        \hfill \textbf{June 2001 to September 2001}
+\begin{innerlist}
+\item Designed and implemented high-availability, redundant multihop
+        communications subsystem.
+\item Participated in software development of various vital box
+        services.
+\end{innerlist}
+
+\end{outerlist}
+
+\halfblankline
+
+\href{http://www.calltech.com/}{\textbf{CallTech Communications}},
+Columbus, Ohio USA
+\begin{outerlist}
+
+\item[] \textit{Information Technology Systems Engineer}%
+        \hfill \textbf{June 1997 to May 2001}
+\begin{innerlist}
+\item Responsible for the acquisition, setup, maintenance, and
+        administration of all Internet hardware and software supporting
+        \href{http://www.netwalk.com/}{NetWalk} Internet service
+        and web presence provider.
+\item Designed and implemented state of the art open source
+        high-availability load balancing system supporting thousands of
+        virtual servers.
+\item Developed software call center support software for clients such
+        as CompuServe, AOL, and Priceline.
+\end{innerlist}
+
+\end{outerlist}
+
+\halfblankline
+
+\textbf{MegaLinx Communications}, Dublin, Ohio USA
+\begin{outerlist}
+
+\item[] \textit{Web Developer and Support Representative}%
+        \hfill \textbf{June 1995 to May 1997}
+\begin{innerlist}
+\item Produced web content for commercial clients.
+\item Assisted in administration of UltraSPARC, x86, 68020, 68030, and
+        PowerPC systems running Sun Solaris, Linux, Microsoft DOS,
+        Microsoft Windows NT, and Apple Macintosh operating systems.
+\item Developed multi-platform open source file sharing solution.
+\item Provided technical support for Internet and web presence
+        customers.
+\end{innerlist}
+
+\end{outerlist}
+
+\section{Service}
+%
+Recent contributor to several open-source software projects, including:
+\begin{innerlist}
+    \item \href{http://vim-latex.sourceforge.net/}{Vim-LaTeX} suite
+    \item \href{http://vimperator.org}{Vimperator} and
+        \href{http://dactyl.sourceforge.net/pentadactyl/index}{Pentadactyl}
+        Firefox extensions
+    \item \href{http://git-scm.com}{Git} distributed version control
+        system
+    \item \href{http://www.selenic.com/mercurial/}{Mercurial} distributed version control
+        system
+    \item Personal projects archived at
+        \url{http://hg.tedpavlic.com/}
+\end{innerlist}
+
+\halfblankline
+
+Frequent contributor to \href{http://www.wikipedia.org/}{Wikipedia}.
+%
+\begin{innerlist}
+    \item Significant contributions to articles on control theory,
+        electronics, and signals and systems.
+\end{innerlist}
+
+\halfblankline
+
+\href{http://www.osufirst.org/}{OSU FIRST Robotics Team},
+\href{http://www.osu.edu}{The Ohio State University}, 2000--2004
+\begin{innerlist}
+\item Introduced middle school and high school students to science and
+        technology by participating with them in national robotics
+        competitions.
+\item Led 2002 team to regional silver medal
+        \href{http://www.firstwiki.org/Engineering_Inspiration_Award}
+             {\emph{Engineering Inspiration Award}}.
+\item \emph{Lead Team Mentor}, 2002--2004
+\item \emph{Component Design Team Lead Mentor}, 2001--2002
+\end{innerlist}
+
+\halfblankline
+
+Institute for Electrical and Electronics Engineers~(IEEE), Member,
+2002--present
+%
+\begin{innerlist}
+\item IEEE Control Systems Society (2004--present)
+\item IEEE Computer Society (2009--present)
+\item IEEE Intelligent Transportation Systems Society (2011--present)
+\item IEEE Systems, Man, and Cybernetics Society (2011--present)
+\item IEEE Robotics and Automation Society (2011--present)
+\end{innerlist}
+
+\halfblankline
+
+Animal Behavior Society, Member, 2011--present
+
+\halfblankline
+
+Director of Computers,
+\href{http://ec.osu.edu/}{Engineers' Council},
+\href{http://www.osu.edu/}{The Ohio State University}, 2002
+
+\halfblankline
+
+\href{http://www.linuxvirtualserver.org/}
+     {Linux Virtual Server Project}, 1999--2000
+\begin{innerlist}
+\item Early member of the team that formed the open-source project that
+        is now an important load balancing solution for the Linux
+        software platform.
+\end{innerlist}
+
+\halfblankline
+
+\href{http://www.gcfn.org/}
+     {Greater Columbus Free-Net}, 1995--1997
+\begin{innerlist}
+\item Provided technical support services.
+\end{innerlist}
+
+\halfblankline
+
+CompuTeen Bulletin Board System, 1993--1995
+\begin{innerlist}
+\item Administrated dial-up bulletin board system.
+\item Founded and administrated TeenLiNK, an international electronic
+        mail network that spread through the United States, Canada, and
+        Australia and delivered mail over a series of electronic dial-up
+        drop offs.
+\end{innerlist}
+
+
+\section{Application Areas}
+%
+Autonomous and Unmanned Vehicles, Flexible Manufacturing Systems,
+Distributed Power Generation, Intelligent Lighting, Power Demand
+Response, Microgrids, Smart Grids
+
+\section{Hardware and Software Skills}
+%
+Analog and Digital Electronics:
+%
+\begin{innerlist}
+    \item Bipolar and FET implementations of continuous and switched
+        amplifiers, modulators, converters, and filters
+
+    \item Computer-Aided Design Tools: Cadence OrCAD, NI Multisim, SPICE, pst-circ
+\end{innerlist}
+
+\halfblankline
+
+Embedded and Real-time Systems:
+%
+\begin{innerlist}
+    \item Software and hardware development with several MCU and
+        DSP platforms (e.g., Motorola MCU's, Texas Instruments DSP's, Atmel
+        ATmega MCU's, Microchip PIC MCU's, and others)
+\end{innerlist}
+
+\halfblankline
+
+Instrumentation, Control, Data Acquisition, Test, and Measurement:
+%
+\begin{innerlist}
+    \item \href{http://www.dspaceinc.com/}{dSPACE} hardware (e.g.,
+        RTI1104) and Control Desk software,
+        \href{http://www.mathworks.com/products/simulink/}{Simulink},
+        \href{http://www.ni.com/}{LabVIEW} and other
+        \href{http://www.ni.com}{National Instruments}
+        control and data acquisition hardware and software (e.g., MIO,
+        SMIO, DSA, DMM, and others), Hewlett-Packard and Agilent
+        bench-top equipment
+\end{innerlist}
+
+\halfblankline
+
+Computer Programming:
+%
+\begin{innerlist}
+    \item C, C$+$$+$, Java, JavaScript, Pascal, Perl, PHP, Lisp, UNIX
+        shell scripting (including POSIX.2), GNU make, AppleScript, SQL,
+        MySQL, \Matlab, Maple, Mathematica, and others
+\end{innerlist}
+
+\halfblankline
+
+Version Control and Software Configuration Management:
+%
+\begin{innerlist}
+    \item DVCS (Mercurial/MQ, Git/StGit), VCS (RCS, CVS, SVN, SCCS), and
+        others
+\end{innerlist}
+
+\halfblankline
+
+\href{http://www.mathworks.com/products/matlab/}{\Matlab} skill set:
+%
+\begin{innerlist}
+    \item Linear algebra, Fourier transforms, Monte Carlo analysis,
+        nonlinear numerical methods, polynomials, statistics,
+        $N$-dimensional filters, visualization
+
+    \item Toolboxes: communications, control system, filter design,
+        genetic algorithm and direct search, signal processing, system
+        identification
+\end{innerlist}
+
+\halfblankline
+
+Software Verification:
+%
+\begin{innerlist}
+    \item KeY, PRISM, KeYmaera
+\end{innerlist}
+
+\halfblankline
+
+Information/Internet Technology:
+%
+\begin{innerlist}
+    \item Networking (UDP, TCP, ARP, DNS, Dynamic
+        routing), Services (Apache, SQL, MediaWiki, POP, IMAP, SMTP,
+        application-specific daemon design)
+\end{innerlist}
+
+\halfblankline
+
+Productivity Applications:
+%
+\begin{innerlist}
+    \item \TeX{} (\LaTeX{}, \BibTeX{}, PSTricks), Vim,
+        most common productivity packages (for Windows, OS X, and Linux
+        platforms)
+\end{innerlist}
+
+\halfblankline
+
+Operating Systems:
+%
+\begin{innerlist}
+    \item Microsoft Windows family, Apple OS X, IBM OS/2, Linux, BSD,
+        IRIX, AIX, Solaris, and other UNIX variants
+\end{innerlist}
+
+\section{Expertise}
+%
+Mathematics:
+%
+\begin{innerlist}
+    \item Applied Mathematics, Real and Complex Analysis, Measure
+        Theory, Differential Geometry, Game Theory, Graph Theory,
+        Combinatorics
+\end{innerlist}
+
+\halfblankline
+
+Control Theory and Engineering:
+%
+\begin{innerlist}
+    \item Linear and Nonlinear Systems Theory, Feedback, Variable
+        Structure Systems and Sliding Modes, Distributed and Intelligent
+        Control, Dynamic Optimization, Bio-mimicry, Bio-inspiration,
+        Hybrid and CyberPhysical Systems
+\end{innerlist}
+
+\halfblankline
+
+Communications and Signal Processing:
+%
+\begin{innerlist}
+    \item Probability, Random Variables, Stochastic Processes,
+        Information Theory, Estimation, Networks
+\end{innerlist}
+
+\halfblankline
+
+Computer Science and Engineering:
+%
+\begin{innerlist}
+    \item Model Checking (automated, distributed, hybrid,
+        probabilistic), Hybrid Automata, Software Verification,
+        Component-Based Reusable Software
+\end{innerlist}
+
+\halfblankline
+
+Natural Sciences (Biology, Neuroscience, Psychology, Anthropology):
+%
+\begin{innerlist}
+    \item Behavioral Ecology, Foraging Theory, Altruism, Impulsiveness,
+        Evolution
+\end{innerlist}
+
+\section{References Available to Contact}
+%
+\href
+{http://www.ece.osu.edu/~passino/}
+{\textbf{Dr.~Kevin M.~Passino}}
+(e-mail:~\href{mailto:passino.1@osu.edu}{passino.1@osu.edu}; phone:~+1-614-312-2472)
+%
+\begin{innerlist}
+    \item Professor,
+        \href{http://www.ece.osu.edu/}{Electrical and Computer
+        Engineering},
+        \href{http://www.osu.edu/}{The Ohio State University}
+
+    \item[$\diamond$] 205 Dreese Laboratories, 2015 Neil Ave., Columbus,
+        OH  43210
+
+    \item[$\star$] \emph{Dr.~Passino was my graduate adviser.}
+\end{innerlist}
+
+\halfblankline
+
+\href
+{http://www.cse.ohio-state.edu/~weide/}
+{\textbf{Dr.~Bruce W.~Weide}}
+(e-mail:~\href{mailto:weide.1@osu.edu}{weide.1@osu.edu}; phone:~+1-614-292-1517)
+\begin{innerlist}
+    \item Professor and Associate Chair,
+        \href{http://www.cse.ohio-state.edu/}{Computer Science and
+        Engineering}\\
+        \href{http://www.osu.edu/}{The Ohio State University}
+
+    \item[$\diamond$] 395 Dreese Laboratories, 2015 Neil Ave., Columbus,
+        OH  43210
+
+    \item[$\star$] \emph{Dr.~Weide is a co-PI on the NSF grant that
+        funds my current postdoctoral position.}
+\end{innerlist}
+
+\halfblankline
+
+\href
+{http://hamilton-lab.wikidot.com/}
+{\textbf{Dr.~Ian M.~Hamilton}}
+(e-mail:~\href{mailto:hamilton.598@osu.edu}{hamilton.598@osu.edu}; phone:~+1-614-292-9147)
+%
+\begin{innerlist}
+    \item Assistant Professor,
+        \href{http://eeob.osu.edu/}{Evolution, Ecology, and Organismal Biology}
+        and
+        \href{http://www.math.ohio-state.edu/}{Mathematics}\\
+        \href{http://www.osu.edu/}{The Ohio State University}
+
+    \item[$\diamond$] 300 Aronoff Laboratory, 318 W.~12th Avenue,
+        Columbus, OH  43210
+
+    \item[$\star$] \emph{Dr.~Hamilton has been a valuable
+        interdisciplinary resource to me.}
+\end{innerlist}
+
+\halfblankline
+
+\href
+{http://www.ece.osu.edu/~serrani/}
+{\textbf{Dr.~Andrea Serrani}}
+(e-mail:~\href{mailto:serrani.1@osu.edu}{serrani.1@osu.edu}; phone:~+1-614-292-4976)
+%
+\begin{innerlist}
+    \item Associate Professor,
+        \href{http://www.ece.osu.edu/}{Electrical and Computer Engineering}\\
+        \href{http://www.osu.edu/}{The Ohio State University}
+
+    \item[$\diamond$] 205 Dreese Laboratories, 2015 Neil Ave., Columbus,
+        OH  43210
+
+    \item[$\star$] \emph{Dr.~Serrani was a member of my doctoral
+        committee.}
+\end{innerlist}
+
+\halfblankline
+
+\href
+{http://www.cse.ohio-state.edu/~paolo/}
+{\textbf{Dr.~Paolo A.~G.~Sivilotti}}
+(e-mail:~\href{mailto:sivilotti.1@osu.edu}{sivilotti.1@osu.edu}; phone: +1-614-292-5835)
+\begin{innerlist}
+    \item Associate Professor,
+        \href{http://www.cse.ohio-state.edu/}{Computer Science and Engineering},
+        \href{http://www.osu.edu/}{The Ohio State University}
+
+    \item[$\diamond$] 395 Dreese Laboratories, 2015 Neil Ave., Columbus,
+        OH  43210
+
+    \item[$\star$] \emph{Dr.~Sivilotti is a co-PI on the NSF grant that
+        funds my current postdoctoral position.}
+\end{innerlist}
+
+\halfblankline
+
+\href
+{http://feh.osu.edu/staff/view.html?UID=798}
+{\textbf{Dr.~Richard J.~Freuler}}
+(e-mail:~\href{mailto:freuler.1@osu.edu}{freuler.1@osu.edu}; phone: +1-614-688-0499)
+\begin{innerlist}
+    \item Professor of Practice,
+        \href{http://mae.osu.edu/}{Mechanical and Aerospace Engineering}\\
+        \href{http://www.osu.edu/}{The Ohio State University}
+
+    \item[$\diamond$] 244 Hitchcock Hall, 2070 Neil Ave., Columbus, OH  43210
+
+    \item[$\star$] \emph{Dr.~Freuler coordinates the Fundamentals of
+        Engineering for Honors program in which I served as an
+        instructor early in my academic career.}
+\end{innerlist}
+
+\halfblankline
+
+\href
+{http://mae.osu.edu/people/staab.1}
+{\textbf{Dr.~George H.~Staab}}
+(e-mail:~\href{mailto:staab.1@osu.edu}{staab.1@osu.edu}; phone: +1-614-292-7920)
+\begin{innerlist}
+    \item Associate Professor,
+        \href{http://mae.osu.edu/}{Mechanical and Aerospace Engineering}\\
+        \href{http://www.osu.edu/}{The Ohio State University}
+
+    \item[$\diamond$] W192 Scott Laboratory, 201 W.~19th Ave., Columbus, OH  43210
+
+    \item[$\star$] \emph{Dr.~Staab is the faculty adviser for the OSU
+        FIRST robotics and engineering outreach group of which I was a
+        four-year member and team leader.}
+\end{innerlist}
+
+\halfblankline
+
+\textbf{Dr.~Clayton Daigle}
+(e-mail:~\href{mailto:Clayton.Daigle@silabs.com}{Clayton.Daigle@silabs.com}; phone: +1-512-532-5935)
+\begin{innerlist}
+    \item Mixed-Signal Engineer,
+        \href{http://www.silabs.com/}{Silicon Laboratories}, Austin, TX
+
+    \item[$\star$] \emph{Dr.~Daigle was my direct supervisor when I
+        worked for National Instruments as an analog hardware R\&D
+        engineer.}
+\end{innerlist}
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% End CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------%
+% The following is copyright and licensing information for
+% redistribution of this LaTeX source code; it also includes a liability
+% statement. If this source code is not being redistributed to others,
+% it may be omitted. It has no effect on the function of the above code.
+%----------------------------------------------------------------------%
+% Copyright (c) 2007, 2008, 2009, 2010, 2011 by Theodore P. Pavlic
+%
+% Unless otherwise expressly stated, this work is licensed under the
+% Creative Commons Attribution-Noncommercial 3.0 United States License. To
+% view a copy of this license, visit
+% http://creativecommons.org/licenses/by-nc/3.0/us/ or send a letter to
+% Creative Commons, 171 Second Street, Suite 300, San Francisco,
+% California, 94105, USA.
+%
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+% OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+% CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+% TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+% SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+%----------------------------------------------------------------------%
