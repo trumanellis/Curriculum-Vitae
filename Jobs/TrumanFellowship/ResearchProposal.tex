@@ -1,0 +1,206 @@
+\documentclass[letterpaper,12pt]{article}
+% \usepackage[margin=1.0in]{geometry}
+\title{Research Proposal}
+\author{Truman E. Ellis, Pavel Bochev (Sponsor)}
+\date{}
+\def\etal{{\it et al.~}}
+
+% A research proposal (not to exceed ten pages plus appendices) describing the scientific importance of 
+% the proposed work, including considerable specificity as to the research plan and data to be obtained, 
+% written for a broad technical audience with field-specific terms explained fully. In the proposal, 
+% present the goals of the proposed research and plans to achieve them. 
+% Provide a clear objective of the research, the expected results, and the impact that the proposed 
+% work may have on Sandia’s Science and Technology capabilities. Include background material,
+% such as previous studies done, and motivation for the proposed research. If desired, copies of 
+% reprints may be attached to each collated copy of the proposal. State the planned approach in order 
+% to clarify the direction of the research. Propose a schedule for the research and explain the 
+% importance and benefits to Sandia. No budget is required unless supplementary support is requested 
+% as described in the following section.
+
+\begin{document}
+\maketitle
+
+% Scientific Importance
+% - Previous Studies
+% - Motivation for Proposed Research
+\section*{Scientific Importance}
+\paragraph{DPG -- a robust framework for computational mechanics.}
+The discontinuous Petrov-Galerkin (DPG) finite element methodology was first proposed by Demkowicz and Gopalakrishnan \cite{DPG1,DPG2} 
+in 2009 and has since gained significant interest from computational mechanics researchers.
+The primary strength of the method lies in its suitability to a very broad class of well-posed problems.
+DPG offers a fundamental framework for developing robust residual-minimizing finite element methods, even for equations that usually cause problems
+for standard techniques, such as convection-dominated diffusion and Stokes flow.
+DPG methods have provably optimal convergence rates and often come very close to the best solution possible in the discrete space.
+
+In contrast to most other numerical methods, the discontinuous Petrov-Galerkin finite element method retains exceptional stability on extremely coarse meshes.
+DPG is also inherently very adaptive.
+It is possible to compute the residual error without knowledge of the exact solution, which can be used to robustly drive adaptivity.
+This results in a very automated technology, as the user can initialize a computation on the coarsest mesh which adequately represents the geometry 
+then step back and let the program solve and adapt iteratively until it resolves the solution features.
+
+Mesh design for computational mechanics can be a time-consuming and expensive process.
+The stability properties and nonlinear convergence of most numerical methods rely on a minimum level of mesh resolution. 
+This means that unless the initial computational mesh is fine enough, convergence can not be guaranteed. 
+Any meshes below this minimum resolution level are termed to be in the ``pre-asymptotic regime.'' 
+This condition implies that meshes need to in some way anticipate the solution before it is known. 
+On top of the minimum requirement that the surface meshes must adequately represent the geometry of the problem under consideration, 
+resolution requirements on the volume mesh make the computational mechanics practitioner's job significantly more time consuming. 
+% This is not to mention that for CFD we also have auxiliary requirements from turbulence models needed to accurately resolve boundary layers. 
+Thus, mesh design and simulation become an iterative trial and error process.
+A common process is for an engineer to study the problem at hand and attempt to predict regions that require extra resolution. 
+Then they will spend hours coaxing the mesher to produce an adequate mesh before importing the mesh into the solver.
+Too often, the solver will fail to converge on the given mesh due to some unforeseen mesh inadequacy on part of the solution domain.
+The engineer then needs to descend back into the mesher to fix the problem elements.
+This process is repeated until the solver is satisfied and convergence can be reached.
+This iterative trial and error is undesirable while working on personal computers or modestly sized compute clusters, 
+but becomes increasing costly as the problem is scaled up to the tens or hundreds of thousands of processors common in high performance computing environments.
+
+
+
+In the context of linear problems, DPG has been successfully applied to a wide range of physical applications.  
+Theoretical groundwork for DPG applied to the Poisson equation was laid in \cite{DPGPoisson}.  The time-harmonic Helmholtz equation was the focus of \cite{DPGHelmholtz, Gopalakrishnan2014} and \cite{DPG4}.  Linear elasticity and plate problems were addressed in \cite{BramwellDPG}, \cite{NiemiBramwellDemkowicz10}, and \cite{BramwellDemkowiczQiu10}, and Maxwell was addressed in \cite{DPGCloaking, WohlmuthReport}.  Linear fluid dynamics problems include convection-diffusion \cite{DPG3,DemkowiczHeuer,ChanHeuerThanhDemkowicz2012,Chan2013,EllisLC} and stationary Stokes flow\cite{DPGStokes,EllisLC}.
+The robust stability properties of DPG appear to carry over into the nonlinear regime as well; Moro, Peraire and Nguyen observed \cite{MoroNguyenPeraire11, MoroMastersThesis} that on a single element, the HDPG method (referring to DPG applied to a hybridized Discontinuous Galerkin method) converges, whereas HDG on its own does not.  Moreover, HDPG required an order of magnitude less artificial diffusion to converge to a nonlinear solution of the compressible Navier-Stokes.  Chan \etal \cite{Chan2013dpg} showed that for both the viscous Burgers' equation and the compressible Navier Stokes equations at high Mach/Reynolds number, DPG converges on an extremely coarse mesh, allowing the use of an adaptive scheme to capture shock and boundary layer phenomena starting from an initial mesh of $O(1)$ elements.  Roberts reports similar results boasting similar stability for high Reynolds numbers for the incompressible Navier-Stokes equations \cite{NateDissertation}.  
+The issue of local conservation within the DPG framework was addressed by Ellis \etal \cite{EllisLC}.
+
+\paragraph{Space-time DPG for transient problems.}
+Previous explorations of the DPG method focused exclusively on steady state problems.
+The easiest extension of steady DPG to transient problems would be to do an implicit time stepping technique in time 
+and use DPG for only the spatial solve at each time step.
+We did indeed explore this approach, but it didn't seem to be a natural fit with the adaptive features of DPG.
+Clearly the Courant-Friedrichs-Lewy (CFL) condition is not binding since we were interested in implicit time integration schemes, 
+but it can be a guiding principle for temporal accuracy in this case.
+So if we are interested in temporally accurate solutions, we are limited by the fact that our smallest mesh elements 
+(which may be orders of magnitude smaller than the largest elements) are constrained to proceed at a much smaller time step than the mesh as a whole. 
+We can either restrict the whole mesh to the smallest time step, or we can attempt some sort of local time stepping.
+A space-time DPG formulation presents an attractive choice as we will be able to preserve our natural adaptivity 
+from the steady problems while extending it in time.
+Thus we achieve an adaptive solution technique for transient problems in a unified framework.
+Space-time methods have also been found superior in their satisfaction of geometric conservation laws for problems with moving boundaries \cite{GCL}.
+Van der Vegt and van der Ven \cite{vanderVegtEuler} note that that ``The space-time DG method provides optimal efficiency for adapting and deforming the mesh while maintaining a conservative scheme which does not require interpolation of data after mesh refinement or deformation.''
+% The obvious downside to such an approach is that for 2D spatial problems, 
+% we now have to compute on a three dimensional mesh while a spatially 3D problem becomes four dimensional.
+
+% Research Plan
+% - Objective of Research
+% - Expected Results
+% - Impact on Sandia's Science and Technology capabilities
+% - Research Directions
+% - Schedule of Research
+%  * Improve Scaling
+%  * Complex Valued Problems
+%  * Collaborate with Other Sandia Researchers
+%  * Maxwell
+%  * MHD
+\section*{Research Plan}
+\paragraph{Research directions.}
+% - Objective of Research
+% - Expected Results
+The ultimate objective for this research is to refine and extend my work on space-time DPG for transient fluid dynamics.
+My dissertation research will focus on 2D compressible and incompressible flow, 
+but I am excited to explore the application of these ideas to problems outside of pure fluid dynamics.
+% but from our experience with DPG's stability properties, we expect that application of these ideas to problems outside of fluid dynamics to be straightforward.
+In particular, the field of magnetohydrodynamics (MHD) appears to be a promising target for space-time DPG.
+Initial investigations applying DPG the Maxwell's equations have been encouraging.
+Coupling Maxwell with my work on Navier-Stokes will not be trivial, but we expect this approach to be quite fruitful.
+Typically the techniques used to solve fluid dynamics and electromagnetics are very different, but within the DPG framework these can both be solved
+with the same technology.
+Depending on the level of interest and collaborations I am able to foster at Sandia, 
+other research directions could include transient elastodynamics, wave propagation, heat transfer, or turbulence,
+but I believe the MHD option holds the most promise.
+From my experience at Lawrence Livermore, I understand that multiphase flows are an important aspect of 
+simulations at the DOE labs, thus
+I would also like to incorporate Ju Liu's recent work (in collaboration with Tom Hughes) on thermodynamically consistent multiphase flow models
+into our DPG framework.
+
+% \paragraph{DPG and HPC.}
+Many of the features inherent in the DPG method appear promising in the context of high performance computing.
+DPG is very compute intensive compared to the associated communication and memory costs.
+Most of the work is spent in embarrassingly parallel local solves for the optimal test functions and local stiffness matrix assembly.
+Additionally, the stability properties of DPG make high order stability a triviality, and in general, 
+high order methods tend to have a more attractive compute/communication profile than low order methods.
+In our codes, we use QR factorization for optimal test function solves, but this factorization is recyclable as we essentially have many right hand sides.
+The division of degrees of freedom into internal vs element interface unknowns produces a global system which can be statically condensed into 
+a solve purely in terms of the element interface degrees of freedom.
+In addition to significantly cutting down on the size of the global solve, 
+this produces a embarrassingly parallel post-processing solve for the internal degrees of freedom.
+This property was one of the motivations behind the development of the hybridized discontinuous Galerkin (HDG) \cite{HDG} method.
+No matter what system of equations is being considered, DPG always produces a Hermitian (symmetric if real) 
+positive definite stiffness matrix for the global solve.
+This property has not really been leveraged in our simulations so far, since we have focused on direct rather than iterative solvers, but we
+anticipate it might be an attractive feature in the future.
+As compute resources scale up, many more HPC simulations are increasingly becoming coupled in multiphysics simulations.
+Since the only requirement for a well-defined discrete DPG method is a well-defined continuous problem, 
+it is certainly possible that each different part of the multiphysics simulation could be discretized with DPG -- 
+no need to develop many different methods for each part of the simulation.
+Thus, another research direction I am interested in pursuing is the development of DPG's potential 
+for modern and prospective high performance computing architectures.
+% Thus, another promising research direction I am interested in is developing and optimizing space-time DPG for modern and upcoming high performance computing architectures.
+
+
+\paragraph{Benefits to Sandia.}
+% - Impact on Sandia's Science and Technology capabilities
+In terms of computational technology, I am developing a new finite element method with significant promise for multiphysics simulations.
+In particular, the space-time approach caries substantial benefits over time stepping when dealing with adaptivity and solution features on multiple scales.
+The robustness of DPG on coarse meshes with automatic adaptivity promises an easier mesh design process for computational scientists.
+Scalability of the method is currently under very active development, but inherent features of DPG and early results are very encouraging.
+This research will advance development of the Camellia \cite{CamelliaDPG} DPG library which was initiated at Sandia 
+and is built exclusively on top of Trilinos \cite{Trilinos}, another major Sandia effort.
+Camellia supports rapid application development and is much simpler to use (interface inspired by the FEniCS project) 
+than most general finite element libraries available.
+In the next year, Camellia is expected to be released as an open source project, possibly as a module within Trilinos.
+% I am an active contributor to the Camellia \cite{CamelliaDPG} DPG library which was started at Sandia and makes heavy use of Trilinos \cite{Trilinos}.
+% The primary developer, Nathan Roberts, whom I will be collaborating with on this research, 
+% develops Camellia full time at Argonne National Lab.
+% In the next year, he plans on releasing Camellia as an open source project, possibly as another module in Trilinos.
+% Additionally, I will be making inroads developing a numerical technology which has the potential to 
+% contribute to Sandia's greater computational science efforts.
+Usage of Sandia's high performance computing systems will be critical to the success of this project, but this project should ultimately
+make it easier for other Sandia researchers to leverage those resources to solve their own computational problems,
+as DPG and Camellia provide a framework for scientific computation rather than simply a driver to accomplish a single class of problems.
+
+\paragraph{Expected schedule.}
+% - Schedule of Research
+%  * Improve Scaling
+%  * Complex Valued Problems
+%  * Collaborate with Other Sandia Researchers
+%  * Maxwell
+%  * MHD
+% 6 months - work on parallel scaling
+% 6 months - add support for complex valued problems, Helmholtz
+% 6 months - steady state Maxwell
+% 6 months - transient Maxwell
+% 6 months - transient MHD
+% 6 months - explore other transient problems
+Predicting the pace of research is obviously an inexact science, but by my rough estimates, my work would progress as follows.
+The majority of scientifically interesting electromagnetics problems take place in 3D, so the priority for the first year will 
+be improving the performance and scaling of Camellia for 3D problems and exploring iterative solvers and preconditioners.
+Scaling and performance improvements are likely to continue through the duration of the research as new bottlenecks and improvements come to light.
+I will also be working on adding support for complex valued problems. The Helmholtz equation will serve as a model problem during this development.
+The second year will be devoted to solving Maxwell's equations in 3D starting with the steady state version and moving to space-time transient simulations.
+I will likely begin initial 2D magnetohydrodynamics simulations at this point.
+In the third year, I will begin working on increasingly complex 3D magnetohydrodynamics problems and multiphase flows.
+If time permits, I would also like to develop a Python interface to Camellia.
+Throughout this process, I intend to build collaborations with Sandia researchers who are already working on these problems so I can 
+learn from their expertise and pursue problems in alignment with Sandia's greater goals.
+% Throughout this whole process I intend to build collaborations with other Sandia researchers and attempt to guide my simulations in directions of interest 
+% to the greater lab.
+
+\paragraph{Expected results.}
+The mathematical understanding of the DPG method has matured significantly over the last few years, 
+and numerical experiments have confirmed the developed theory.
+Based on our previous experience with DPG for fluid flow and new results for DPG for electromagnetism, we are very confident
+that magnetohydrodynamics and multiphase flows are a reasonable objective for the Truman Fellowship.
+There are some difficult computing challenges to overcome, but they are by no means insurmountable.
+By the end of my postdoctoral experience, I believe that we will have a user friendly DPG library that we can present to the greater 
+computational community for straightforward computations of realistic scientific and engineering problems on high performance computing systems.
+% Magnetohydrodynamics falls into the class of problems that DPG promises stability for, so we don't see any insurmountable obstacles for this 
+% Thus, we expect that solving this new class of problems will not pose a problem.
+% The challenges then lie on the computing side of things. 
+% Making our code efficient and scalable for 3D problems will not be trivial, but we expect it to be doable.
+% From several years of experience now working on DPG and Camellia, I do believe that 3D magnetohydrodynamics simulations with multiple materials
+% on realistic geometries is a reasonable goal for this postdoc.
+
+
+\bibliographystyle{elsarticle-num} 
+\bibliography{../Papers}
+\end{document}

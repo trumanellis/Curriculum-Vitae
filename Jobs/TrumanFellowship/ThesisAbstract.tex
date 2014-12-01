@@ -1,0 +1,134 @@
+\documentclass[letterpaper,12pt]{article}
+% \usepackage[margin=1.0in]{geometry}
+\usepackage{authblk}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{subcaption}
+\usepackage{morefloats}
+\usepackage{url}
+
+\title{Thesis Abstract \\ \vspace{2 mm} {\large Space-Time Discontinuous Petrov-Galerkin Finite Elements \\for Transient Computational Fluid Dynamics}}
+\author{Truman E. Ellis\\
+\small \textbf{Committee:} Leszek~Demkowicz (co-advisor), Robert~Moser (co-advisor), \\Thomas~Hughes, Clint~Dawson, Jayathi~Murthy}
+% \author{Truman E. Ellis}
+\date{}
+
+\begin{document}
+\maketitle
+Please note that at the time of this application, I am still about a year out from completing my dissertation. As such, I am including a slightly modified summary of my thesis proposal.
+
+\section*{Background and Completed Work}
+\paragraph{DPG - a robust adaptive method for CFD.}
+The discontinuous Petrov-Galerkin method \cite{DPGOverview} is a novel adaptive finite element framework with exceptional stability properties.
+Initial mesh design is a time-consuming and expensive part of CFD simulations, as a domain expert has to manually design the 
+mesh to achieve near resolution in all parts of the domain lest the numerical method become unstable.
+DPG in contrast does not have a pre-asymptotic regime, allowing simulations to start on the coarsest mesh that can adequately represent the domain geometry.
+\emph{A posteriori} error estimation and adaptivity can also be done very naturally as DPG comes with an error representation function 
+that indicates residual error.
+
+Automatic adaptivity and pre-asymptotic stability produce a powerful synthesis when combined with high performance computing.
+Human intervention to correct or adapt a failed massively parallel simulation can be a costly endeavor, prompting the desire for a
+numerical technology that will automatically adapt to changing physical dynamics while avoiding ``crashing'' due to under-resolved meshes.
+An ideal parallel algorithm should be locally compute intensive while maintaining minimal memory transfer requirements \cite{BlastWebPage}.
+These are all observed properties of the discontinuous Petrov-Galerkin finite element method.
+Locally computed \emph{optimal test functions} ensure stability on convection-dominated flows as well as resolved viscous flow.
+Element contributions to the global stiffness matrix can be computed independently due to the use of discontinuous test functions.
+Furthermore, static condensation allows the global solve to concern only the \emph{trace} degrees of freedom; 
+trace variables are defined on element interfaces.  
+This allows significant reduction of the cost of the global solve.  
+The internal degrees of freedom can then be resolved using a fully parallel post-processing step.
+
+\paragraph{Importance of local conservation.}
+Local conservation was an early concern about applying DPG to fluid problems. 
+This property is tied to whether or not constants are represented in a method's test space.
+Many of the top numerical methods for CFD are automatically conservative by construction, 
+but DPG carried no such guarantee since the test space is constructed on the fly.
+I ran a number of test problems and found that indeed, standard DPG is not exactly conservative but converges to near exact local conservation 
+as it resolves the flow features under consideration.
+Leveraging Lagrange multipliers, I developed a new locally conservative DPG formulation \cite{EllisLC} 
+that maintains exact conservation even on coarse meshes.
+This was found to dramatically improve the coarse mesh quality on several Stokes flow test problems.
+We also proved stability and robustness estimates for this variant formulation.
+
+\paragraph{Extending DPG to transient problems.}
+Most transient CFD simulation tools are usually a combination of some spatial solver coupled with a time stepping algorithm.
+Often every spatial element is advanced in lock-step -- requiring the time step to conform to the strictest element in the whole domain.
+This approach can be very ineffective for an adaptive simulation where element sizes can vary by several orders of magnitude.
+Technologies exist to address these inefficiencies (such as asynchronous variational integrators \cite{Lew2003}), but bolting on another technology
+causes us to lose a lot of the desirable DPG properties such as automatic adaptivity and stability.
+
+The goal of this dissertation is to extend the current technology of adaptive steady state DPG to transient problems in space-time.
+The emphasis will be on transient incompressible and compressible Navier-Stokes.
+We have already pursued some preliminary research in this direction with a space-time DPG solver for spatially 1D flows.
+We've applied this solver to a number of test problems for the heat equation, convection-diffusion, Burgers' equation, 
+and compressible Navier-Stokes shock tube problems.
+On problems with analytical solutions, we have observed optimal rates of convergence.
+The application of DPG to massively parallel CFD is the ultimate goal of this research, but this dissertation will be largely developmental.
+
+
+\section*{Current Work}
+\paragraph{Mathematical analysis of space-time DPG.}
+% \paragraph{Area A: Applicable mathematics.}
+DPG is a method built on rigorous mathematical theory.
+While rooted in the standard theory of finite elements, DPG is novel enough that many of the old analysis tools do not directly apply.
+As a consequence, much of the early DPG literature has been laden with mathematical proofs of stability, convergence, and robustness.
+While developing the theory for a locally conservative DPG formulation we performed a stability and robustness analysis.
+Another robustness analysis will be necessary as we explore space-time convection-diffusion since the equation is parabolic in space-time.
+Past DPG robustness analysis focused on purely elliptic problems.
+
+One significant remaining obstacle to obtaining robust solutions for compressible Navier-Stokes is guaranteeing positivity of the density and
+energy in the presence of unresolved shocks. 
+Positivity is an auxiliary stability condition that is not guaranteed by traditional stabilization 
+techniques (including DPG), so we are going to need to augment an additional technology to the method in order to guarantee physically
+realizable densities and energies. 
+Unfortunately, positivity preservation is itself an incredibly difficult problem. 
+We have several ideas we want to try in the context of DPG, but solving the issue may not lie within the scope of this dissertation.
+
+% \paragraph{Area B: Numerical analysis and scientific computation.}
+\paragraph{Scientific code development and computation.}
+I will support development of the DPG software framework Camellia \cite{Roberts2011} including running verification on several test problems.
+This will include the development and verification of spatially 2D space-time simulations.
+I will also develop a means to perform time stepping via space-time slabs which should reduce the 
+overall run time and memory requirements for longer simulations.
+I've already contributed several auxiliary features to Camellia including mesh readers and solution export, 
+but I also plan on looking into adding HDF5 support along with parallel solution output.
+
+A space-time implementation adds additional dimensionality to the problem under consideration increasing the problem size and memory requirements.
+This makes parallel simulation an increasingly important aspect of this work.
+The 16 core \emph{Nozomi} cluster is sufficient for early experimentation, but as we ramp up to larger problems, 
+I plan to run on allocations at TACC and on \emph{Mira} at Argonne National Laboratory.
+
+The major bottleneck to parallel simulations at the moment is that Camellia still relies on a serial direct solver for the global solve.
+Time permitting, I would like to investigate the implementation of an effective iterative solver for DPG.
+
+% \paragraph{Area C: Mathematical modeling and applications.}
+\paragraph{Validation problems to consider.}
+As we are exploring a method that is still very much in development, I will be running a number of standard test problems.
+I've already explored the conservation properties of DPG through a couple of simulations of Stokes flow around a cylinder and over
+a backward facing step.
+
+The steady state DPG formulation failed to converge on the Carter plate problem for Reynolds numbers of $10^7$. 
+One hypothesis is that this was due to transient effects on the unresolved mesh which pushed the time step requirements very low.
+The hope is that by using a space-time formulation with temporal adaptivity, we would be able to resolve these temporal oscillations
+and they would die away to the correct steady state solution.
+Another hypothesis is that the non-convergence was caused by Gibbs phenomenon near the unresolved leading edge driving the density negative.
+Our line search algorithm scales the Newton updates to prevent negative densities, but sometimes the line search factor can be driven so small
+as to effectively stall convergence.
+Therefore my first priority will be to investigate which factor is stalling convergence and attempt to solve it either via adaptive space-time
+refinements or some sort of positivity preserving technology yet to be decided upon.
+If this proves to be an effective way of handling transient shock problems, 
+I would also like to simulate the Sedov explosion problem and the Noh implosion problem.
+Time permitting, I would also like to run the triple point shock interaction problem and a Rayleigh-Taylor instability problem.
+These will be ideal for demonstrating the local adaptivity of DPG.
+
+That said, I believe that the most promising application for space-time DPG will be the incompressible Navier-Stokes equations.
+Here we don't run into any of the same issues with Gibbs phenomenon and we can use vanilla space-time DPG.
+The Taylor-Green vortex problem is an obvious choice since it has a exact solution that we can compare to.
+There are several vortex shedding problems that would be of interest including flow over a triangle, square, and cylinder.
+
+\bibliographystyle{plain}
+\bibliography{../Papers}
+\end{document}
+
