@@ -239,7 +239,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%% Begin CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-\makeheading{Truman E.~Ellis}
+\makeheading{Dr. T.~Everett~Ellis}
 
 \section{Contact Information}
 %
@@ -252,13 +252,14 @@
 \newlength{\rcollength}\setlength{\rcollength}{2.00in}%
 %
 \begin{tabular}[t]{@{}p{\textwidth-\rcollength}p{\rcollength}}
-\href{http://www.ices.utexas.edu/}%
-     {Institute for Computational Engineering and Sciences} & \\
-\href{http://www.utexas.edu/}{The University of Texas at Austin}
-                           & \textit{Phone:} 512-814-8304 \\
-201 East 24th St, Stop C0200 & \textit{Email:} \email{ellis.truman@gmail.com}\\
-Austin, TX 78712-1229          & \textit{Web:}
-\href{http://www.trumanellis.com/}{www.trumanellis.com}\\
+1109 Lead Ave SW & \textit{Phone:} +1-512-814-8304 \\
+Albuquerque, NM 87102 & \textit{Email:} \email{t.everett.ellis@gmail.com}
+% \href{http://www.ices.utexas.edu/}%
+%      {Institute for Computational Engineering and Sciences} & \\
+% \href{http://www.utexas.edu/}{The University of Texas at Austin}
+%                            & \textit{Phone:} 512-814-8304 \\
+% 201 East 24th St, Stop C0200 & \textit{Email:} \email{t.everett.ellis@gmail.com}\\
+% Austin, TX 78712-1229          & \textit{Web:} \href{http://www.trumanellis.com/}{www.trumanellis.com}\\
 \end{tabular}
 
 \section{Summary of Qualifications}
@@ -278,19 +279,100 @@ Austin, TX 78712-1229          & \textit{Web:}
 % both spoken and written communication and interpersonal skills with experience
 % working in a team environment as well as individually.
 
-Computational scientist with a background in aerospace engineering and an emphasis on fluid dynamics.
-Moderate exposure to computational solid mechanics, wave propagation, electrodynamics, and heat transfer.
-Experience running commercial CFD solvers as well as developing research codes. 
-Expertise using Linux on high performance computing systems. 
-Well developed programming and development skills with an affinity for clean, elegant solutions. 
-Comfortable with both spoken and written communication and interpersonal skills with experience
-working in a team environment as well as individually.
+% Computational scientist with a background in aerospace engineering and an emphasis on fluid dynamics.
+% Moderate exposure to computational solid mechanics, wave propagation, electrodynamics, and heat transfer.
+% Experience running commercial CFD solvers as well as developing research codes. 
+% Expertise using Linux on high performance computing systems. 
+% Well developed programming and development skills with an affinity for clean, elegant solutions. 
+% Comfortable with both spoken and written communication and interpersonal skills with experience
+% working in a team environment as well as individually.
 
-\section{Research Interests}
+Computational scientist with a background in aerospace engineering and an emphasis on fluid dynamics.
+Exposure to a variety of simulation domains including solid mechanics, wave propagation, electromagnetics, heat transfer, and plasma physics. 
+Experience running commercial CFD solvers as well as developing research codes. 
+Well developed programming and development skills with an affinity for clean, elegant solutions. 
+A naturally extroverted leader with well honed speaking, writing, and presentation skills.
+% A natural leader comfortable with interpersonal dynamics with well honed speaking and writing skills.
+% Very polished verbal and written communication skills and an affinity for interpersonal dynamics.
+% Expertise using Linux on high performance computing systems. 
+% Comfortable with both spoken and written communication and interpersonal skills with experience
+% working in a team environment as well as individually.
+
+% \section{Research Interests}
+% %
+% Computational fluid dynamics, turbulence modeling,
+% finite element methods, discontinuous Petrov-Galerkin, Lagrangian hydrocodes,
+% computational plasma dynamics, magnetohydrodynamics, computational mechanics
+
+\section{Professional Experience}
 %
-Computational fluid dynamics, turbulence modeling,
-finite element methods, discontinuous Petrov-Galerkin, Lagrangian hydrocodes,
-computational plasma dynamics, magnetohydrodynamics, computational mechanics
+\textbf{Postdoctoral Scientist} \hfill {2016 to present}
+\begin{innerlist}
+
+\item[] \href{http://www.sandia.gov/}{Electromagnetic Theory Group,\\Sandia National Laboratory}
+        % \href{http://www.utexas.edu/}{University of Texas at Austin}
+\begin{innerlist}
+\item Developing highly scalable plasma physics simulations using the \href{https://trilinos.org/}{Trilinos Project}.
+\item Contributing to a test harness for stochastic simulation codes using a new theory of stochastic Richardson extrapolation implemented in Python.
+\item Involvement with experimental studies of electro-magnetic pulses and analysis of data collected.
+\end{innerlist}
+\end{innerlist}
+
+\bigskip
+
+\textbf{Graduate Research Assistant} \hfill {2010 to present}
+\begin{innerlist}
+
+\item[] \href{http://ices.utexas.edu/}{Institute for Computational Engineering
+and Sciences},\\
+        \href{http://www.utexas.edu/}{University of Texas at Austin}
+\begin{innerlist}
+\item Developed discontinuous Petrov-Galerkin finite element methods for
+fluid flow applications.
+\item Actively contributed to
+\href{https://github.com/CamelliaDPG/Camellia}{Camellia}, a parallel C++ library built on Trilinos for
+rapid development of DPG problem formulations.
+% \item Added an interface to VTK output for visualization via Paraview.
+\item Wrote bridge code to enable output in VTK and HDF5 formats.
+\item Added support for space-time parabolic problems.
+\item Implemented an exactly conservative formulation of DPG through Lagrange
+multipliers.
+\item Contributed to open source
+\href{http://libmesh.sourceforge.net/}{libMesh} finite element library.
+\end{innerlist}
+\end{innerlist}
+
+\bigskip
+
+\textbf{Graduate Student Researcher} \hfill {2008 to 2010, 2013}
+\begin{innerlist}
+
+\item[] \href{http://iscr.llnl.gov/}{Institute for Scientific Computing Research},\\
+        \href{http://www.llnl.gov/}{Lawrence Livermore National Laboratory}
+\begin{innerlist}
+\item Worked in a small research group developing advanced finite element discretization methods for Lagrangian hydrodynamics.
+\item Goal was to improve the current staggered grid hydro algorithms in multi-material Arbitrary Lagrangian Eulerian codes.
+\item Wrote a prototype code in Matlab to explore the benefits of using high order finite element pairs.
+\item Extended \href{https://computation.llnl.gov/casc/blast/blast.html}{Blast}, the next iteration object oriented C++ code to axisymmetric problems.
+\item Implemented a smoothness indicator to isolate artificial viscosity to shocked and underresolved flow regions.
+\item Developed a Python-scriptable 2D plotting tool to interface with the research code.
+\item Contributed to open source \href{http://code.google.com/p/mfem/}{MFEM} finite element library.
+\end{innerlist}
+\end{innerlist}
+
+\bigskip
+\pagebreak
+
+\textbf{Undergraduate Student Researcher} \hfill {Summer 2007}
+\begin{innerlist}
+
+\item[] {Research Experience for Undergraduates},
+        \href{http://www.ae.uiuc.edu/}{Aerospace Engineering},\\
+        \href{http://www.uiuc.edu/}{University of Illinois at Urbana-Champaign}
+\begin{innerlist}
+\item \emph{Compressible Flows in Geological Applications} - Designed a series of experiments and set up a lab to study the Mount St. Helens lateral blast.
+\end{innerlist}
+\end{innerlist}
 
 \section{Education}
 %
@@ -301,7 +383,7 @@ Austin
 
 \item[] Ph.D.,
         \href{http://www.ices.utexas.edu/}
-             {Computational Science Engineering and Mathematics}, expected May 2015
+             {Computational Science Engineering and Mathematics}, April 2016
         \begin{innerlist}
         \item Thesis Topic: \emph{Space-time Discontinuous Petrov-Galerkin Finite Elements for Transient Computational Fluid Dynamics}
         \item Advisors:
@@ -339,77 +421,22 @@ San Luis Obispo
 
 \end{outerlist}
 
-\section{Professional Experience}
-%
-\textbf{Graduate Research Assistant} \hfill {2010 to present}
-\begin{innerlist}
-
-\item[] \href{http://ices.utexas.edu/}{Institute for Computational Engineering
-and Sciences},\\
-        \href{http://www.utexas.edu/}{University of Texas at Austin}
-\begin{innerlist}
-\item Developing the discontinuous Petrov-Galerkin finite element method for
-fluid flow applications.
-\item Actively contributing to
-\href{https://github.com/CamelliaDPG/Camellia}{Camellia}, a parallel C++ library built on Trilinos for
-rapid development of DPG problem formulations.
-% \item Added an interface to VTK output for visualization via Paraview.
-\item Wrote bridge code to enable output in VTK and HDF5 formats.
-\item Added support for space-time parabolic problems.
-\item Implemented an exactly conservative formulation of DPG through Lagrange
-multipliers.
-\item Contributed to open source
-\href{http://libmesh.sourceforge.net/}{libMesh} finite element library.
-\end{innerlist}
-\end{innerlist}
-
-\bigskip
-\pagebreak
-
-\textbf{Graduate Student Researcher} \hfill {2008 to 2010, 2013}
-\begin{innerlist}
-
-\item[] \href{http://iscr.llnl.gov/}{Institute for Scientific Computing Research},\\
-        \href{http://www.llnl.gov/}{Lawrence Livermore National Laboratory}
-\begin{innerlist}
-\item Worked in a small research group developing advanced finite element discretization methods for Lagrangian hydrodynamics.
-\item Goal was to improve the current staggered grid hydro algorithms in multi-material Arbitrary Lagrangian Eulerian codes.
-\item Wrote a prototype code in Matlab to explore the benefits of using high order finite element pairs.
-\item Extended \href{https://computation.llnl.gov/casc/blast/blast.html}{Blast}, the next iteration object oriented C++ code to axisymmetric problems
-\item Implemented a smoothness indicator to isolate artificial viscosity to shocked and underresolved flow regions.
-\item Developed a Python-scriptable 2D plotting tool to interface with the research code
-\item Contributed to open source \href{http://code.google.com/p/mfem/}{MFEM} finite element library
-% \item Research presented at the 2009 international conference on  Numerical Methods for Multi-Material Fluids and Structures in Pavia, Italy
-\end{innerlist}
-\end{innerlist}
-
-\bigskip
-
-\textbf{Undergraduate Student Researcher} \hfill {Summer 2007}
-\begin{innerlist}
-
-\item[] {Research Experience for Undergraduates},
-        \href{http://www.ae.uiuc.edu/}{Aerospace Engineering},\\
-        \href{http://www.uiuc.edu/}{University of Illinois at Urbana-Champaign}
-\begin{innerlist}
-\item \emph{Compressible Flows in Geological Applications} - Designed a series of experiments and set up a lab to study the Mount St. Helens lateral blast
-\end{innerlist}
-\end{innerlist}
-
 \section{Refereed\\Journal\\Publications}
 \begin{bibsection}
-    \item Truman Ellis, Leszek Demkowicz, Jesse Chan, and Robert Moser (2014),\\
-          Space-Time DPG: Designing a Method for Massively Parallel CFD.\\
-          \emph{Computers \& Fluids} (submitted)
-    \item Truman Ellis, and Leszek Demkowicz (2014),\\
+    \item T.E. Ellis, J. Chan, and L. Demkowicz (2016),\\
+          Robust DPG Methods for Transient Convection-Diffusion.\\
+          \emph{Lecture Notes in Computational Science and Engineering},\\
+          \doi{10.1007/978-3-319-41640-3\_6}
+          % \doi{10.1007/978-3-319-41640-3_6}
+    \item T.E. Ellis, and L. Demkowicz (2014),\\
           Locally Conservative Discontinuous Petrov-Galerkin Finite Elements for Fluid Problems.\\
-          \emph{Computers \& Mathematics with Applications} 
+          \emph{Computers \& Mathematics with Applications},
           \doi{10.1016/j.camwa.2014.07.005}
-    \item Veselin Dobrev, Truman Ellis, Tzanio Kolev and Robert Rieben (2011),\\
+    \item V. Dobrev, T.E. Ellis, Tz. Kolev and R. Rieben (2011),\\
           Curvilinear Finite Elements for Lagrangian Hydrodynamics.\\
           \emph{International Journal for Numerical Methods in Fluids},
           \doi{10.1002/fld.2366}
-    \item Veselin Dobrev, Truman Ellis, Tzanio Kolev and Robert Rieben (2012),\\
+    \item V. Dobrev, T.E. Ellis, Tz. Kolev and R. Rieben (2012),\\
           High-order Curvilinear Finite Elements for Axisymmetric Lagrangian
           Hydrodynamics.\\
           \emph{Computers \& Fluids},
