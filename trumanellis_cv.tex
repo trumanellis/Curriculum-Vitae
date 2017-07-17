@@ -19,7 +19,7 @@
 
 % Don't like 10pt? Try 11pt or 12pt
 \documentclass[10pt]{article}
-
+    
 % This is a helpful package that puts math inside length specifications
 \usepackage{calc}
 \usepackage{bibentry}
@@ -78,6 +78,7 @@
             marginparwidth=1.2in,     % Length of section titles
             marginparsep=.05in,       % Space between titles and text
             margin=1in,               % 1 inch margins
+            top=0.9in,
             includemp]{geometry}
 
 %% Use these lines for A4-sized paper
@@ -239,7 +240,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%% Begin CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-\makeheading{Dr. Truman~Everett~Ellis}
+
+\makeheading{Dr.~Truman~E.~Ellis}
 
 \section{Contact Information}
 %
@@ -251,8 +253,9 @@
 %
 \newlength{\rcollength}\setlength{\rcollength}{2.00in}%
 %
-\begin{tabular}[t]{@{}p{\textwidth-\rcollength}p{\rcollength}}
+\begin{tabular}[t]{@{}p{\textwidth-\rcollength-0.1in}p{\rcollength}}
 1109 Lead Ave SW & \textit{Phone:} +1-512-814-8304 \\
+% Albuquerque, NM 87102 & \textit{Email:} \email{t.everett.ellis@gmail.com}
 Albuquerque, NM 87102 & \textit{Email:} \email{teellis@sandia.gov}
 % \href{http://www.ices.utexas.edu/}%
 %      {Institute for Computational Engineering and Sciences} & \\
@@ -287,16 +290,16 @@ Albuquerque, NM 87102 & \textit{Email:} \email{teellis@sandia.gov}
 % Comfortable with both spoken and written communication and interpersonal skills with experience
 % working in a team environment as well as individually.
 
-Computational scientist with a background in aerospace engineering and an emphasis on fluid dynamics and shock physics.
-Exposure to a variety of simulation domains including solid mechanics, wave propagation, electromagnetics, heat transfer, and plasma physics. 
-Experience running commercial CFD solvers as well as developing research codes for a wide range of flow domains. 
-Well developed programming and development skills with an affinity for clean, elegant solutions. 
-% A naturally extroverted leader with well honed speaking, writing, and presentation skills.
-% A natural leader comfortable with interpersonal dynamics with well honed speaking and writing skills.
-% Very polished verbal and written communication skills and an affinity for interpersonal dynamics.
-% Expertise using Linux on high performance computing systems. 
-Comfortable with both spoken and written communication skills with experience
-working in a team environment as well as individually.
+% Computational scientist with a background in aerospace engineering and an emphasis on fluid dynamics and shock physics.
+% Computational scientist with a background in aerospace engineering and an emphasis on finite element methods.
+% Experience with a variety of simulation domains including solid mechanics, wave propagation, electromagnetics, heat transfer, and plasma physics. 
+Computational scientist with a background in aerospace engineering and an emphasis on advanced numerical methods.
+Exposure to commercial CFD/CAE solvers as well as experience developing research codes for a wide range of applications. 
+Well developed programming and development skills (C++ and Python) with an affinity for clean, elegant solutions. 
+Expertise using Linux on high performance computing systems. 
+Excellent spoken and written communication skills and thrives in a team environment.
+% Excellent spoken and written communication skills with experience
+% working in a team environment as well as individually.
 
 \section{Professional Experience}
 %
@@ -306,9 +309,11 @@ working in a team environment as well as individually.
 \item[] \href{http://www.sandia.gov/}{Electromagnetic Theory Group,\\Sandia National Laboratory}
         % \href{http://www.utexas.edu/}{University of Texas at Austin}
 \begin{innerlist}
-\item Developing highly scalable plasma physics simulations using the \href{https://trilinos.org/}{Trilinos Project}.
+\item Automated a tool-chain to perform time-domain finite element electromagnetic simulations.
+\item Developing highly scalable plasma physics simulations in C++ using \href{https://trilinos.org/}{Trilinos}.
+\item Analyzing stabilized finite element methods and shock capturing for multi-fluid plasma equations.
 \item Contributing to a test harness for stochastic simulation codes using a new theory of stochastic Richardson extrapolation implemented in Python.
-\item Involvement with experimental studies of electro-magnetic pulses and analysis of data collected.
+\item Involvement with experimental studies of particle accelerator driven electro-magnetic pulses and analysis of data collected.
 \end{innerlist}
 \end{innerlist}
 
@@ -321,18 +326,17 @@ working in a team environment as well as individually.
 and Sciences},\\
         \href{http://www.utexas.edu/}{University of Texas at Austin}
 \begin{innerlist}
-\item Developed discontinuous Petrov-Galerkin finite element methods for
+\item Developed space-time and locally conservative discontinuous Petrov-Galerkin finite element methods for
 fluid flow applications.
-\item Contributed significantly to
+\item Solved problems related to Stokes flow, incompressible and compressible Navier-Stokes, and Euler equations with shocks.
+\item Extensive work with
 \href{https://github.com/CamelliaDPG/Camellia}{Camellia}, a parallel C++ library built on Trilinos for
 rapid development of DPG problem formulations.
 % \item Added an interface to VTK output for visualization via Paraview.
-\item Wrote bridge code to enable output in VTK and HDF5 formats.
-\item Added support for space-time parabolic problems.
-\item Implemented an exactly conservative formulation of DPG through Lagrange
-multipliers.
-\item Contributed to open source
-\href{http://libmesh.sourceforge.net/}{libMesh} finite element library.
+% \item Wrote bridge code to enable output in VTK and HDF5 formats.
+% \item Added support for space-time parabolic problems.
+% \item Implemented an exactly conservative formulation of DPG through Lagrange multipliers.
+\item Contributed to open source \href{http://libmesh.sourceforge.net/}{libMesh} finite element library.
 \end{innerlist}
 \end{innerlist}
 
@@ -364,7 +368,9 @@ multipliers.
         \href{http://www.ae.uiuc.edu/}{Aerospace Engineering},\\
         \href{http://www.uiuc.edu/}{University of Illinois at Urbana-Champaign}
 \begin{innerlist}
-\item \emph{Compressible Flows in Geological Applications} - Designed a series of experiments and set up a lab to study the Mount St. Helens lateral blast.
+\item Designed a series of experiments and set up a lab to study the Mount St. Helens lateral blast.
+\item Developed CAD designs of experimental apparatus and assisted with assembly.
+\item Performed numerical predictions of experimental results.
 \end{innerlist}
 \end{innerlist}
 
@@ -493,21 +499,27 @@ Computational fluid dynamics, shock physics, multi-phase flows, turbulence model
 finite element methods, Lagrangian hydrocodes,
 computational plasma dynamics, magnetohydrodynamics, computational mechanics
 
-\section{Awards}
+\section{Professional Development}
+\begin{innerlist}
+\item How to Effectively Mentor as a PI/Team Lead -- Sandia, 2017
+\item EPSCoR Post-Doc Leadership Workshop -- Sandia, 2017
+\end{innerlist}
+
+\section{Awards and Honors}
 %
 \begin{innerlist}
-\item Computational Applied Math Fellow -- University of Texas
-\item Graduated \emph{Summa cum Laude} -- Cal Poly
-\item President's Honors List -- Cal Poly 2005 - 2007
-\item Dean's List -- Cal Poly 2005 - 2008
-\item Litton Industries in Engineering Scholarship -- Cal Poly 2007 - 2008
-\item Accenture Outstanding AERO Award -- Cal Poly 2007
-\item Reinhold Aerospace Engineering Scholarship -- Cal Poly 2007
-% \item Dean's List -- Ventura College 2002 - 2005
-% \item Howe Heywood Mathematics Prize -- Ventura College 2005
-% \item James and Ida Iliff Memorial Scholarship -- Ventura College 2005
-% \item Alexis Dember Scholarship -- Ventura College 2005
-% \item Alpha Gamma Sigma Scholastic and Service Award -- Ventura College 2003
+\item Awarded Computational Applied Math Fellowship -- UT Austin, 2010 - 2014
+\item Graduated \emph{Summa cum Laude} -- Cal Poly, 2010
+\item Elected to President's Honors List -- Cal Poly, 2005 - 2007
+\item Elected to Dean's List -- Cal Poly, 2005 - 2008
+\item Litton Industries in Engineering Scholarship -- Cal Poly, 2007 - 2008
+\item Accenture Outstanding AERO Award -- Cal Poly, 2007
+\item Reinhold Aerospace Engineering Scholarship -- Cal Poly, 2007
+\item Elected to Dean's List -- Ventura College, 2002 - 2005
+\item Howe Heywood Mathematics Prize -- Ventura College, 2005
+\item James and Ida Iliff Memorial Scholarship -- Ventura College, 2005
+\item Alexis Dember Scholarship -- Ventura College, 2005
+\item Alpha Gamma Sigma Scholastic and Service Award -- Ventura College, 2003
 \end{innerlist}
 
 % \section{Professional Memberships}
